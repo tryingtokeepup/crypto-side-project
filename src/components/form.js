@@ -14,12 +14,43 @@ export default class CoinForm extends Component {
   }
 
   render() {
+    let { changeTokenTo, changeTokenFrom } = this.props;
+
     return (
       <DivWrapper>
-        <select default={this.state.tokenPair}>
-          <option value="ticker1">{this.props.tokenPair.to}</option>
-          <option value="ticker2">{this.props.tokenPair.from}</option>
-          <option value="ticker3">something</option>
+        <label htmlFor="to">Select the token to exchange to.</label>
+        <select id="to" onChange={e => changeTokenTo(e.target.value)}>
+          <option value="DAI">DAI</option>
+          <option value="ETH">ETH</option>
+          <option value="USDC">USDC</option>
+          <option value="MKR">MKR</option>
+          <option value="BAT">BAT</option>
+          <option value="LINK">LINK</option>
+          <option value="ZRX">ZRX</option>
+          <option value="KNC">KNC</option>
+          <option value="BNT">BNT</option>
+          <option value="WBTC">WBTC</option>
+          <option value="SUSD">SUSD</option>
+          <option value="TUSD">TUSD</option>
+          <option value="DGX">DGX</option>
+          <option value="SNT">SNT</option>
+        </select>
+        <label htmlFor="from">Select the token to exchange from.</label>
+        <select id="from" onChange={e => changeTokenFrom(e.target.value)}>
+          <option value="DAI">DAI</option>
+          <option value="ETH">ETH</option>
+          <option value="USDC">USDC</option>
+          <option value="MKR">MKR</option>
+          <option value="BAT">BAT</option>
+          <option value="LINK">LINK</option>
+          <option value="ZRX">ZRX</option>
+          <option value="KNC">KNC</option>
+          <option value="BNT">BNT</option>
+          <option value="WBTC">WBTC</option>
+          <option value="SUSD">SUSD</option>
+          <option value="TUSD">TUSD</option>
+          <option value="DGX">DGX</option>
+          <option value="SNT">SNT</option>
         </select>
       </DivWrapper>
     );

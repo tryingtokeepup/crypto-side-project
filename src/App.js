@@ -56,8 +56,8 @@ class App extends Component {
     this.state = {
       order: orderModel,
       tokenPair: {
-        to: 'DAI',
-        from: 'ETH'
+        to: 'ETH',
+        from: 'DAI'
       },
       type: 'buy',
       purchase_type: false,
@@ -75,14 +75,40 @@ class App extends Component {
     });
     this.setState({ ...this.state, order: trade });
   };
-  changeToken = (newType, token) => {
+  changeTokenTo = newType => {
     let tokenPair = this.state.tokenPair;
     this.setState({ order: orderModel });
     // let the user change the token type
-    tokenPair[newType] = token;
-    this.setState({ tokenPair: tokenPair }, () => {
-      this.findTrade();
-    });
+
+    if (newType === tokenPair.from) {
+      alert('Please choose a different Token to change into!');
+    } else {
+      this.setState(prevState => ({
+        tokenPair: {
+          ...prevState.tokenPair,
+          to: newType
+        }
+      }));
+    }
+    this.findTrade();
+  };
+
+  changeTokenFrom = newType => {
+    let tokenPair = this.state.tokenPair;
+    this.setState({ order: orderModel });
+    // let the user change the token type
+
+    if (newType === tokenPair.to) {
+      alert('Please choose a different Token to exchange from!');
+    } else {
+      this.setState(prevState => ({
+        tokenPair: {
+          ...prevState.tokenPair,
+          from: newType
+        }
+      }));
+    }
+    this.findTrade();
   };
   componentDidMount() {
     sdk.registerStatusHandler((status, data) => {
@@ -107,8 +133,15 @@ class App extends Component {
           <p>Thank you for logging in!</p>
         </header>
         <MainContainerDiv>
-          <p>1 cDAI = {this.state.order.metadata.source.price} ETH</p>
-          <CoinForm tokenPair={this.state.tokenPair} />
+          <p>
+            1 {this.state.tokenPair.from} =
+            {this.state.order.metadata.source.price} {this.state.tokenPair.to}
+          </p>
+          <CoinForm
+            changeTokenTo={this.changeTokenTo}
+            changeTokenFrom={this.changeTokenFrom}
+            tokenPair={this.state.tokenPair}
+          />
         </MainContainerDiv>
       </MainPageDiv>
     );
