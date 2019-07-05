@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Authentication from './components/auth.js';
+import CoinForm from './components/form';
 import DEXAG from 'dexag-sdk';
 
 const sdk = DEXAG.fromProvider(window.ethereum);
@@ -28,19 +29,27 @@ const GlobalStyle = createGlobalStyle`
 const MainPageDiv = styled.div`
   border: 1px solid white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 `;
-const name = 'placeholder';
+const name = 'User';
 const orderModel = {
   metadata: {
     source: {}
   }
 };
 
-// console.log('trial promise = ', findTrade());
-
+const MainContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  min-width: 300px;
+  border: 1px solid white;
+`;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -57,15 +66,24 @@ class App extends Component {
   }
 
   findTrade = async () => {
+    let { tokenPair, type } = this.state;
     const trade = await sdk.getTrade({
-      to: 'cDAI',
-      from: 'ETH',
+      to: tokenPair.to,
+      from: tokenPair.from,
       toAmount: 1,
       dex: 'Best'
     });
     this.setState({ ...this.state, order: trade });
   };
-
+  changeToken = (newType, token) => {
+    let tokenPair = this.state.tokenPair;
+    this.setState({ order: orderModel });
+    // let the user change the token type
+    tokenPair[newType] = token;
+    this.setState({ tokenPair: tokenPair }, () => {
+      this.findTrade();
+    });
+  };
   componentDidMount() {
     sdk.registerStatusHandler((status, data) => {
       this.setState({ web3Status: { status, data } });
@@ -80,6 +98,7 @@ class App extends Component {
 
   render() {
     console.log('trial = ', this.state.order);
+    console.log(this.state.tokenPair);
     return (
       <MainPageDiv>
         <GlobalStyle />
@@ -87,6 +106,10 @@ class App extends Component {
           <h1>Hey {name}, thanks for signing up!</h1>
           <p>Thank you for logging in!</p>
         </header>
+        <MainContainerDiv>
+          <p>1 cDAI = {this.state.order.metadata.source.price} ETH</p>
+          <CoinForm tokenPair={this.state.tokenPair} />
+        </MainContainerDiv>
       </MainPageDiv>
     );
   }
