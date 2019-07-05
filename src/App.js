@@ -1,26 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled, { createGlobalStyle } from 'styled-components';
+import Authentication from './components/auth.js';
+
+const GlobalStyle = createGlobalStyle`
+  html,
+  body,
+  #root {
+    box-sizing: border-box;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif, cursive;
+    background-color: #282c34;
+    margin : 0 auto;
+    height: 100%
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+`;
+
+const MainPageDiv = styled.div`
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+`;
+const name = 'placeholder';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <MainPageDiv>
+      <GlobalStyle />
+      <header>
+        <h1>Hey {name}, thanks for signing up!</h1>
+        <p>Thank you for logging in!</p>
       </header>
-    </div>
+    </MainPageDiv>
   );
 }
 
-export default App;
+export default Authentication(App);
