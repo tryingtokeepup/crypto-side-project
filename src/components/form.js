@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 /********************************************** Styles ********************************************/
-const DivWrapper = styled.div``;
+const DivWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 /********************************************* Component ******************************************/
 
@@ -14,7 +17,13 @@ export default class CoinForm extends Component {
   }
 
   render() {
-    let { changeTokenTo, changeTokenFrom } = this.props;
+    let {
+      changeTokenTo,
+      changeTokenFrom,
+      changeAmount,
+      findTrade,
+      makeTrade
+    } = this.props;
 
     return (
       <DivWrapper>
@@ -35,6 +44,13 @@ export default class CoinForm extends Component {
           <option value="DGX">DGX</option>
           <option value="SNT">SNT</option>
         </select>
+        <form>
+          <input
+            onChange={e => changeAmount(e.target.value)}
+            type="number"
+            value={this.props.toAmount}
+          />
+        </form>
         <label htmlFor="from">Select the token to exchange from.</label>
         <select id="from" onChange={e => changeTokenFrom(e.target.value)}>
           <option value="DAI">DAI</option>
@@ -52,6 +68,8 @@ export default class CoinForm extends Component {
           <option value="DGX">DGX</option>
           <option value="SNT">SNT</option>
         </select>
+        <button onClick={findTrade}>Submit</button>
+        <button onClick={makeTrade}>Make the Trade!</button>
       </DivWrapper>
     );
   }

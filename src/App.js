@@ -61,20 +61,25 @@ class App extends Component {
       },
       type: 'buy',
       purchase_type: false,
-      loaded: false
+      loaded: false,
+      loading: false,
+      toAmount: 1
     };
   }
 
   findTrade = async () => {
-    let { tokenPair, type } = this.state;
+    this.setState({ loading: true });
+    let { tokenPair, toAmount, type } = this.state;
+    console.log('Firing Find Trade');
     const trade = await sdk.getTrade({
       to: tokenPair.to,
       from: tokenPair.from,
-      toAmount: 1,
+      toAmount: toAmount,
       dex: 'Best'
     });
-    this.setState({ ...this.state, order: trade });
+    this.setState({ ...this.state, order: trade, loading: false });
   };
+
   changeTokenTo = newType => {
     let tokenPair = this.state.tokenPair;
     this.setState({ order: orderModel });
@@ -90,7 +95,6 @@ class App extends Component {
         }
       }));
     }
-    this.findTrade();
   };
 
   changeTokenFrom = newType => {
@@ -108,7 +112,10 @@ class App extends Component {
         }
       }));
     }
-    this.findTrade();
+  };
+  changeAmount = newAmount => {
+    console.log(newAmount);
+    this.setState({ toAmount: newAmount });
   };
   componentDidMount() {
     sdk.registerStatusHandler((status, data) => {
@@ -116,15 +123,31 @@ class App extends Component {
       this.timeoutStatus(status);
       console.log(status);
     });
-    this.findTrade();
-    console.log('trial = ', this.state.order);
+
     // find the price for default pair
     // this.findTrades();
   }
+  timeoutStatus = status => {
+    // hide rejected message
+    if (status == 'rejected')
+      setTimeout(() => {
+        this.closeStatus();
+      }, 3500);
+  };
+  makeTrade = async () => {
+    let { order } = this.state;
+    // start web3 validation process
+    const valid = await sdk.validate(order);
+    if (valid) {
+      // web3 is valid, trade order
+      sdk.trade(order);
+    }
+  };
 
   render() {
     console.log('trial = ', this.state.order);
     console.log(this.state.tokenPair);
+
     return (
       <MainPageDiv>
         <GlobalStyle />
@@ -134,15 +157,22 @@ class App extends Component {
         </header>
         <MainContainerDiv>
           <p>
-            1 {this.state.tokenPair.from} =
-            {this.state.order.metadata.source.price} {this.state.tokenPair.to}
+            {this.state.toAmount} {this.state.tokenPair.from} =
+            {this.state.order.metadata.source.price * this.state.toAmount}
+            {this.state.tokenPair.to}
+            {/* this.state.order.metadata.source && */}
           </p>
           <CoinForm
+            amount={this.state.toAmount}
             changeTokenTo={this.changeTokenTo}
             changeTokenFrom={this.changeTokenFrom}
+            changeAmount={this.changeAmount}
             tokenPair={this.state.tokenPair}
+            findTrade={this.findTrade}
+            makeTrade={this.makeTrade}
           />
         </MainContainerDiv>
+        {this.state.loading && <p>"Loading your data! 😆 "</p>}
       </MainPageDiv>
     );
   }
