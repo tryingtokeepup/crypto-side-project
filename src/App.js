@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Authentication from './components/auth.js';
+import DEXAG from 'dexag-sdk';
 
+const sdk = DEXAG.fromProvider(window.ethereum);
 const GlobalStyle = createGlobalStyle`
   html,
   body,
@@ -32,16 +34,46 @@ const MainPageDiv = styled.div`
 `;
 const name = 'placeholder';
 
-function App() {
-  return (
-    <MainPageDiv>
-      <GlobalStyle />
-      <header>
-        <h1>Hey {name}, thanks for signing up!</h1>
-        <p>Thank you for logging in!</p>
-      </header>
-    </MainPageDiv>
-  );
+const trial = sdk.getTrade({
+  to: 'DAI',
+  from: 'ETH',
+  toAmount: 1,
+  dex: 'Best'
+});
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tokenPair: {
+        to: 'DAI',
+        from: 'ETH'
+      },
+      type: 'buy',
+      purchase_type: false,
+      loaded: false
+    };
+  }
+  componentDidMount() {
+    sdk.registerStatusHandler((status, data) => {
+      this.setState({ web3Status: { status, data } });
+      this.timeoutStatus(status);
+      console.log(status);
+    });
+    // find the price for default pair
+    // this.findTrades();
+  }
+  render() {
+    return (
+      <MainPageDiv>
+        <GlobalStyle />
+        <header>
+          <h1>Hey {name}, thanks for signing up!</h1>
+          <p>Thank you for logging in!</p>
+        </header>
+      </MainPageDiv>
+    );
+  }
 }
 
 export default Authentication(App);
