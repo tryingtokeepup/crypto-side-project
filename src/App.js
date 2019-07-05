@@ -33,18 +33,19 @@ const MainPageDiv = styled.div`
   min-height: 100vh;
 `;
 const name = 'placeholder';
+const orderModel = {
+  metadata: {
+    source: {}
+  }
+};
 
-const trial = sdk.getTrade({
-  to: 'DAI',
-  from: 'ETH',
-  toAmount: 1,
-  dex: 'Best'
-});
+// console.log('trial promise = ', findTrade());
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      order: orderModel,
       tokenPair: {
         to: 'DAI',
         from: 'ETH'
@@ -54,16 +55,31 @@ class App extends Component {
       loaded: false
     };
   }
+
+  findTrade = async () => {
+    const trade = await sdk.getTrade({
+      to: 'cDAI',
+      from: 'ETH',
+      toAmount: 1,
+      dex: 'Best'
+    });
+    this.setState({ ...this.state, order: trade });
+  };
+
   componentDidMount() {
     sdk.registerStatusHandler((status, data) => {
       this.setState({ web3Status: { status, data } });
       this.timeoutStatus(status);
       console.log(status);
     });
+    this.findTrade();
+    console.log('trial = ', this.state.order);
     // find the price for default pair
     // this.findTrades();
   }
+
   render() {
+    console.log('trial = ', this.state.order);
     return (
       <MainPageDiv>
         <GlobalStyle />
