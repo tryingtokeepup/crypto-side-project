@@ -44,6 +44,7 @@ const Header = styled.div`
     margin-top: 10px;
     border-radius: 7px;
     outline: none;
+    background: white;
     :hover {
       box-shadow: 2px 2px 15px rgba(94, 255, 252, 0.8);
       cursor: pointer;
