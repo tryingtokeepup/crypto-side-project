@@ -17,6 +17,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif, cursive;
+    /* background: linear-gradient(to right, #282c34 0%, rgba(42, 38, 38, 0.5) 100%); */
+
     background-color: #282c34;
     margin : 0 auto;
     height: 100%
@@ -47,6 +49,7 @@ const MainContainerDiv = styled.div`
   border: 1px solid white;
 
   display: flex;
+  border-radius: 25px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -54,6 +57,7 @@ const MainContainerDiv = styled.div`
   min-width: 300px;
   border: 1px solid white;
   background: #0d1d36;
+  box-shadow: 3px 3px 1px rgba(103, 128, 159, 1);
 `;
 class App extends Component {
   constructor(props) {
