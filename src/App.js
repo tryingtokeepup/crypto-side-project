@@ -227,7 +227,7 @@ class App extends Component {
               this.setState({ name: name });
             }}
           >
-            Name Change
+            Change Name?
           </button>
           <div>
             <P
