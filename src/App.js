@@ -38,6 +38,17 @@ const Header = styled.div`
     width: 100%;
     justify-content: space-around;
   }
+  button {
+    height: 30px;
+    width: 100px;
+    margin-top: 10px;
+    border-radius: 7px;
+    outline: none;
+    :hover {
+      box-shadow: 2px 2px 15px rgba(94, 255, 252, 0.8);
+      cursor: pointer;
+    }
+  }
 `;
 const P = styled.p`
   font-size: 20px;
@@ -55,7 +66,6 @@ const MainPageDiv = styled.div`
   align-items: center;
   min-height: 100vh;
 `;
-const name = 'Jai';
 const orderModel = {
   metadata: {
     source: {}
@@ -95,7 +105,8 @@ class App extends Component {
       purchase_type: false,
       loaded: false,
       loading: false,
-      toAmount: 1
+      toAmount: 1,
+      name: 'Jai'
     };
   }
 
@@ -194,6 +205,11 @@ class App extends Component {
       sdk.trade(order);
     }
   };
+  // changeName() {
+  //   let name = prompt('Please enter your name', 'Harry Potter');
+  //   console.log(name);
+  //   this.setState({ ...this.state, name: 'Kai' });
+  // }
 
   render() {
     // console.log('trial = ', this.state.order);
@@ -204,7 +220,15 @@ class App extends Component {
         <GlobalStyle />
         <Header>
           <Investing src={investingImg} />
-          <h1>Hey {name}!</h1>
+          <h1>Hey {this.state.name}!</h1>
+          <button
+            onClick={() => {
+              let name = prompt('Please enter your name', 'Harry Potter');
+              this.setState({ name: name });
+            }}
+          >
+            Name Change
+          </button>
           <div>
             <P
               onClick={() => {
