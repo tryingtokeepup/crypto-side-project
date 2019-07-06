@@ -174,7 +174,7 @@ class App extends Component {
         </Header>
         <MainContainerDiv>
           <p>
-            {this.state.toAmount} {this.state.tokenPair.from} =
+            From: {this.state.toAmount} {this.state.tokenPair.from} = To:{' '}
             {Number.parseFloat(
               this.state.order.metadata.source.price * this.state.toAmount
             ).toFixed(3) + ' '}
