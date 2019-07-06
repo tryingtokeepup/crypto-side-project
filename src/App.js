@@ -27,7 +27,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const MainPageDiv = styled.div`
-  border: 1px solid white;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,6 +41,8 @@ const orderModel = {
 };
 
 const MainContainerDiv = styled.div`
+  border: 1px solid white;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,6 +50,7 @@ const MainContainerDiv = styled.div`
   min-height: 300px;
   min-width: 300px;
   border: 1px solid white;
+  background: #0d1d36;
 `;
 class App extends Component {
   constructor(props) {
