@@ -7,6 +7,11 @@ const DivWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
+  form,
+  select {
+    margin: 10px 0px 10px 0px;
+  }
 `;
 const NiceButton = styled.button`
   margin-top: 10px;
@@ -15,6 +20,11 @@ const NiceButton = styled.button`
   width: 200px;
   border-radius: 7px;
   background: ${props => (props.color ? 'orange' : 'cyan')};
+  outline: none;
+  :hover {
+    box-shadow: 2px 2px 15px rgba(94, 255, 252, 0.8);
+    cursor: pointer;
+  }
 `;
 
 /********************************************* Component ******************************************/
