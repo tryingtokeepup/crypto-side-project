@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Authentication from './components/auth.js';
 import CoinForm from './components/form';
 import DEXAG from 'dexag-sdk';
+import investingImg from './undraw_investing.svg';
 
 const sdk = DEXAG.fromProvider(window.ethereum);
 const GlobalStyle = createGlobalStyle`
@@ -25,7 +26,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
 `;
-
+const Investing = styled.img`
+  width: 400px;
+`;
 const MainPageDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -155,6 +158,7 @@ class App extends Component {
       <MainPageDiv>
         <GlobalStyle />
         <header>
+          <Investing src={investingImg} />
           <h1>Hey {name}, thanks for signing up!</h1>
           <p>Thank you for logging in!</p>
         </header>
