@@ -28,6 +28,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
 `;
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 const Investing = styled.img`
   width: 400px;
 `;
@@ -161,11 +167,11 @@ class App extends Component {
     return (
       <MainPageDiv>
         <GlobalStyle />
-        <header>
+        <Header>
           <Investing src={investingImg} />
-          <h1>Hey {name}, thanks for signing up!</h1>
-          <p>Thank you for logging in!</p>
-        </header>
+          <h1>Hey {name}!</h1>
+          <p>Start trading. 😁</p>
+        </Header>
         <MainContainerDiv>
           <p>
             {this.state.toAmount} {this.state.tokenPair.from} =
