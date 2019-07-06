@@ -34,7 +34,7 @@ const MainPageDiv = styled.div`
   align-items: center;
   min-height: 100vh;
 `;
-const name = 'User';
+const name = 'Jai';
 const orderModel = {
   metadata: {
     source: {}
@@ -138,6 +138,7 @@ class App extends Component {
     let { order } = this.state;
     // start web3 validation process
     const valid = await sdk.validate(order);
+    alert('Bitcoin Wallet integration is not yet finished, sorry. :(');
     if (valid) {
       // web3 is valid, trade order
       sdk.trade(order);
@@ -158,7 +159,9 @@ class App extends Component {
         <MainContainerDiv>
           <p>
             {this.state.toAmount} {this.state.tokenPair.from} =
-            {this.state.order.metadata.source.price * this.state.toAmount}
+            {Number.parseFloat(
+              this.state.order.metadata.source.price * this.state.toAmount
+            ).toFixed(3) + ' '}
             {this.state.tokenPair.to}
             {/* this.state.order.metadata.source && */}
           </p>
