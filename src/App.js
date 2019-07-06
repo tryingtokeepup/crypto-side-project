@@ -33,6 +33,17 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  div {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+`;
+const P = styled.p`
+  font-size: 20px;
+  cursor: pointer;
+  color: ${props => (props.buy ? 'yellow' : 'white')};
+  text-decoration: ${props => (props.buy ? 'underline' : 'null')};
 `;
 const Investing = styled.img`
   width: 400px;
@@ -64,6 +75,12 @@ const MainContainerDiv = styled.div`
   border: 1px solid white;
   background: #0d1d36;
   box-shadow: 3px 3px 1px rgba(103, 128, 159, 1);
+  text-align: center;
+
+  p span {
+    font-weight: bolder;
+    line-height: 1.5;
+  }
 `;
 class App extends Component {
   constructor(props) {
@@ -82,16 +99,34 @@ class App extends Component {
     };
   }
 
-  findTrade = async () => {
+  findTrade = async e => {
+    e.preventDefault();
     this.setState({ loading: true });
     let { tokenPair, toAmount, type } = this.state;
     console.log('Firing Find Trade');
-    const trade = await sdk.getTrade({
-      to: tokenPair.to,
-      from: tokenPair.from,
-      toAmount: toAmount,
-      dex: 'Best'
-    });
+
+    const tradeObject = () => {
+      if (type === 'buy') {
+        return {
+          to: tokenPair.to,
+          from: tokenPair.from,
+          toAmount: toAmount,
+          type: type,
+          dex: 'Best'
+        };
+      } else {
+        return {
+          to: tokenPair.from,
+          from: tokenPair.to,
+          fromAmount: toAmount,
+          type: type,
+          dex: 'Best'
+        };
+      }
+    };
+    console.log(tradeObject());
+    const trade = await sdk.getTrade(tradeObject());
+    console.log(trade);
     this.setState({ ...this.state, order: trade, loading: false });
   };
 
@@ -144,7 +179,7 @@ class App extends Component {
   }
   timeoutStatus = status => {
     // hide rejected message
-    if (status == 'rejected')
+    if (status === 'rejected')
       setTimeout(() => {
         this.closeStatus();
       }, 3500);
@@ -161,24 +196,50 @@ class App extends Component {
   };
 
   render() {
-    console.log('trial = ', this.state.order);
-    console.log(this.state.tokenPair);
-
+    // console.log('trial = ', this.state.order);
+    // console.log(this.state.tokenPair);
+    // console.log(this.state.order.metadata.source.price);
     return (
       <MainPageDiv>
         <GlobalStyle />
         <Header>
           <Investing src={investingImg} />
           <h1>Hey {name}!</h1>
+          <div>
+            <P
+              onClick={() => {
+                this.setState({ type: 'buy' });
+              }}
+              buy={this.state.type === 'buy'}
+            >
+              Buy
+            </P>
+            <P
+              onClick={() => {
+                this.setState({ type: 'sell' });
+              }}
+              buy={this.state.type === 'sell'}
+            >
+              Sell
+            </P>
+          </div>
           <p>Start trading. 😁</p>
         </Header>
         <MainContainerDiv>
           <p>
-            From: {this.state.toAmount} {this.state.tokenPair.from} = To:{' '}
-            {Number.parseFloat(
-              this.state.order.metadata.source.price * this.state.toAmount
-            ).toFixed(3) + ' '}
+            {this.state.type === 'buy' ? 'Pay' : 'Recieve'} :{' '}
+            {this.state.toAmount} {this.state.tokenPair.from} ={' '}
+            {this.state.type === 'buy' ? 'For' : 'For'}{' '}
+            {this.state.order.metadata.source.price !== undefined &&
+              Number.parseFloat(
+                this.state.order.metadata.source.price * this.state.toAmount
+              ).toFixed(3) + ' '}
             {this.state.tokenPair.to}
+            <br />
+            <span>
+              {this.state.order.metadata.source.dex != undefined &&
+                `Best Price found at : ${this.state.order.metadata.source.dex}`}
+            </span>
             {/* this.state.order.metadata.source && */}
           </p>
           <CoinForm
