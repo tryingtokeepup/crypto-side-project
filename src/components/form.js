@@ -6,6 +6,15 @@ const DivWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+`;
+const NiceButton = styled.button`
+  margin-top: 10px;
+
+  height: 30px;
+  width: 200px;
+  border-radius: 7px;
+  background: ${props => (props.color ? 'orange' : 'cyan')};
 `;
 
 /********************************************* Component ******************************************/
@@ -69,8 +78,10 @@ export default class CoinForm extends Component {
           <option value="DGX">DGX</option>
           <option value="SNT">SNT</option>
         </select>
-        <button onClick={findTrade}>Submit</button>
-        <button onClick={makeTrade}>Make the Trade!</button>
+        <NiceButton onClick={findTrade}>Submit</NiceButton>
+        <NiceButton color onClick={makeTrade}>
+          Make the Trade!
+        </NiceButton>
       </DivWrapper>
     );
   }
